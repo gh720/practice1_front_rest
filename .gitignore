@@ -172,3 +172,5 @@ uploads/
 temp/
 auxiliary/*.jpg
 log.txt
+fake_modules
+frontend2
