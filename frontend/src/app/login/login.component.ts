@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService} from "../services/auth.service";
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from "../services/auth.service";
+import {User} from "../models/user";
 
 @Component({
   selector: 'app-login',
@@ -10,10 +11,44 @@ export class LoginComponent implements OnInit {
 
   test: string = 'test!';
 
-  constructor(private auth:AuthService) { }
+  user: User = new User()
+
+  constructor(private auth: AuthService) {
+  }
+
+  onLogin(): void {
+    this.auth.login(this.user)
+      .subscribe((user) => {
+        console.log(user)
+      }, (error) => {
+        console.log(error);
+      })
+  }
 
   ngOnInit() {
-    console.log(this.auth.test());
+
+    // let sampleUser: any = {
+    //   username: 'u2@test.local' as string,
+    //   password: 'p2' as string
+    // };
+    // this.auth.register({username: sampleUser.username, password: sampleUser.password})
+    //   .subscribe(
+    //     (user) => {
+    //       console.log(user)
+    //     }, (error) => {
+    //       console.log(error);
+    //     }
+    //   );
+    //
+    // this.auth.login({username: sampleUser.username, password: sampleUser.password}).subscribe(
+    //   (user) => {
+    //     console.log(user);
+    //   }, (error) => {
+    //     console.log(error);
+    //   });
+
+    // console.log(this.auth.test());
   }
+
 
 }

@@ -2,7 +2,8 @@ import datetime
 
 from django.contrib.auth import authenticate, login
 from rest_framework import generics, status, permissions
-from rest_framework.decorators import action
+# from rest_framework.decorators import action
+from rest_framework.decorators import detail_route, list_route
 from rest_framework.response import Response
 from rest_framework import viewsets
 
@@ -88,7 +89,8 @@ class LocationViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
-    @action(methods=['get'], detail=True)
+    # @action(methods=['get'], detail=True)
+    @list_route(methods=['get'])
     def ratio(self, request, *args, **kwargs):
         '''
         Average rating for a location ('location')
@@ -97,7 +99,8 @@ class LocationViewSet(viewsets.ModelViewSet):
         szer = srz.LocationRatioSerializer(location)
         return Response(szer.data)
 
-    @action(methods=['post'], detail=True)
+    # @action(methods=['post'], detail=True)
+    @detail_route(methods=['post'])
     def visit(self, request, *args, **kwargs):
         '''
         posting a visit info (/locations/{id}/visit)
