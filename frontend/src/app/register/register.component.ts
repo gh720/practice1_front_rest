@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {User} from "../models/user";
 import {AuthService} from "../services/auth.service";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -11,12 +12,14 @@ import {AuthService} from "../services/auth.service";
 export class RegisterComponent {
   user: User = new User();
 
-  constructor(private auth: AuthService) {
+  constructor(private router:Router, private auth: AuthService) {
   }
 
   onRegister(): void {
     this.auth.register(this.user)
       .subscribe((user) => {
+          localStorage.setItem('token', user.token);
+          this.router.navigateByUrl('/status');
           console.log(user);
         }
         , (err) => {

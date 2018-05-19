@@ -1,11 +1,17 @@
 import datetime
 
+import jwt
+import re
+from django.conf import settings
 from django.contrib.auth import authenticate, login
-from rest_framework import generics, status, permissions
+from rest_framework import generics, status, permissions, exceptions
 # from rest_framework.decorators import action
+from rest_framework.authentication import get_authorization_header
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.response import Response
 from rest_framework import viewsets
+from rest_framework_jwt.settings import api_settings as jwt_settings
+from rest_framework_jwt.views import verify_jwt_token
 
 from tourmarks.models import User, Location, Visit
 from tourmarks.serializers import UserSerializer
@@ -21,6 +27,30 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             return True
         return request.user.is_authenticated and obj.object_owner == request.user
 
+
+class UserStatusView(generics.GenericAPIView):
+    '''
+    user status: authenticated or not { ... status: True } or {... status: False }
+    '''
+    authentication_classes = ()
+    permission_classes=()
+
+    def is_jwt_token_ok(self,request):
+        token = get_authorization_header(request).decode('utf-8')
+        token = re.sub('^JWT ', '', token) # FIX this
+        decoded = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+        username = decoded['username']
+        return True
+
+    def get(self, request):
+        try:
+            if self.is_jwt_token_ok(request):
+                return Response({'status': 'success'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'status': 'fail', 'exception': str(e)}, status=status.HTTP_200_OK)
+        return Response({'status':'fail'}, status=status.HTTP_200_OK)
+
+
 class UserListView(generics.ListAPIView):
     '''
     List of users ('user_list')
@@ -28,6 +58,10 @@ class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
 
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     '''
@@ -47,14 +81,26 @@ class UserCreateView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+
+    def new_token(self, obj):
+        jwt_payload_handler = jwt_settings.JWT_PAYLOAD_HANDLER
+        jwt_encode_handler = jwt_settings.JWT_ENCODE_HANDLER
+
+        payload = jwt_payload_handler(obj)
+        token = jwt_encode_handler(payload)
+        return token
+
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user_ = serializer.save()
         user = authenticate(username=user_.username, password=request.data.get('password'))
         login(request, user)
+        token = self.new_token(user)
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        data = { **serializer.data }
+        data['token']=token
+        return Response(data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class UserRatioView(generics.RetrieveAPIView):

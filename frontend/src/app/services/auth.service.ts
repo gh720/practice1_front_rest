@@ -32,12 +32,21 @@ export class AuthService {
   register(user): Observable<any> {
     let url: string = `${this.BASE_URL}/register/`;
     return this.http.post(url, user, {headers: this.headers})
-      // ((response): Response) ??
+    // ((response): Response) ??
       .map((response) => {
         return response;
       })
   }
 
+
+  ensure_authenticated(token): Observable<any> {
+    let url: string = `${this.BASE_URL}/status/`;
+    let headers: HttpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `JWT ${token}`
+    });
+    return this.http.get(url, {headers: headers});
+  }
 
   test(): string {
     return 'working!';

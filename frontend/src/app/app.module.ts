@@ -8,12 +8,14 @@ import {LoginComponent} from './login/login.component';
 import {AuthService} from "./services/auth.service";
 import {HttpClientModule, HttpClientXsrfModule} from "@angular/common/http";
 import {RegisterComponent} from './register/register.component';
+import { StatusComponent } from './status/status.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    StatusComponent
   ],
   imports: [
     BrowserModule,
@@ -21,7 +23,8 @@ import {RegisterComponent} from './register/register.component';
     FormsModule,
     RouterModule.forRoot([
       { path: 'login', component: LoginComponent },
-      { path: 'register', component: RegisterComponent }
+      { path: 'register', component: RegisterComponent },
+      { path: 'status', component: StatusComponent }
     ]),
     HttpClientXsrfModule.withOptions({
       cookieName: 'csrftoken',
