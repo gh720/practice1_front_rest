@@ -7,7 +7,7 @@ import {AuthService} from "../services/auth.service";
   styleUrls: ['./status.component.css']
 })
 export class StatusComponent implements OnInit {
-  isLoggedIn: boolean;
+  isLoggedIn: boolean = false;
 
   constructor(private auth: AuthService) {
   }
