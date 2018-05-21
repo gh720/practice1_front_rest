@@ -1,20 +1,22 @@
+<app-toast [message]="toast.message"></app-toast>
+
 <div class="row">
   <div class="col-md-4">
     <h1>Login</h1>
     <hr/>
     <br/>
-    <form (ngSubmit)="onLogin()" novalidate>
+    <form [formGroup]="login_form" (ngSubmit)="on_login()" novalidate>
       <div class="form-group">
-        <label for="username">Email</label>
-        <input type="text" id="username" [(ngModel)]="user.username" name="username" placeholder="enter username"
+        <label for="username">Username</label>
+        <input type="text" id="username" formControlName="username" name="username" placeholder="enter username"
                class="form-control" required>
       </div>
       <div class="form-group">
-        <label for="username">User name</label>
-        <input type="password" id="password" [(ngModel)]="user.password" name="password" placeholder="enter password"
+        <label for="password">Password</label>
+        <input type="password" id="password" formControlName="password" name="password" placeholder="enter password"
                class="form-control" required>
       </div>
-      <button type="submit" class="btn btn-default">Submit</button>
+      <button type="submit" class="btn btn-default" [disabled]="!login_form.valid">Login</button>
     </form>
   </div>
 </div>

@@ -136,7 +136,7 @@ class LocationViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     # @action(methods=['get'], detail=True)
-    @list_route(methods=['get'])
+    @detail_route(methods=['get'])
     def ratio(self, request, *args, **kwargs):
         '''
         Average rating for a location ('location')

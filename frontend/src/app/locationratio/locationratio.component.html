@@ -1,0 +1,50 @@
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="card" *ngIf="!is_editing">
+  <h4 class="card-header">Current locations</h4>
+  <div class="card-body">
+    <table>
+      <tbody>
+      <tr>
+        <td>Count:</td>
+        <td>{{ ratio_data.count }}</td>
+      </tr>
+      <tr>
+        <td>Average:</td>
+        <td>{{ ratio_data.avg }}</td>
+      </tr>
+      </tbody>
+    </table>
+    <hr/>
+    <table>
+      <thead>
+      <tr>
+        <th>Country</th>
+        <th>City</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody *ngIf="ratio_data.visitors.length===0">
+      <tr>
+        <td>Nobody rated this location yet!</td>
+      </tr>
+      </tbody>
+
+      <tbody *ngIf="!is_editing">
+      <tr *ngFor="let user of ratio_data.visitors">
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.first_name }}</td>
+        <td>{{ user.last_name }}</td>
+        <td>{{ user.gender }}</td>
+        <td>{{ user.birth_date }}</td>
+        <td>{{ user.country }}</td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+

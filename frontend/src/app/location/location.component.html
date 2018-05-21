@@ -1,0 +1,48 @@
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="card" *ngIf="!is_editing">
+  <h4 class="card-header">Current locations</h4>
+  <div class="card-body">
+    <table>
+      <thead>
+      <tr>
+        <th>Country</th>
+        <th>City</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody *ngIf="locations.length===0">
+      <tr>
+        <td>No locations yet!</td>
+      </tr>
+      </tbody>
+
+      <tbody *ngIf="!is_editing">
+      <tr *ngFor="let location of locations">
+        <td>{{ location.country }}</td>
+        <td>{{ location.city }}</td>
+        <td>{{ location.name }}</td>
+        <td>{{ location.description }}</td>
+        <td><a type="button" [routerLink]="['/location_ratio', location.id]">Show rating</a></td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+
+<div class="card" *ngIf="!is_editing && this.auth.logged_in">
+  <h4 class="card-header">Add new location</h4>
+  <div class="card-body">
+    <form class="form-inline" [formGroup]="location_form" (ngSubmit)="add_location()">
+      <input name="country" type="text" class="form-control mr-2" formControlName="country">
+      <input name="city" type="text" class="form-control mr-2" formControlName="city">
+      <input name="name" type="text" class="form-control mr-2" formControlName="name">
+      <textarea name="description" type="text" class="form-control mr-2" formControlName="description"></textarea>
+      <button class="btn btn-primary" type="submit" [disabled]="!location_form.valid">Add</button>
+    </form>
+  </div>
+</div>

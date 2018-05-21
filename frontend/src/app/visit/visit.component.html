@@ -1,0 +1,47 @@
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="card" *ngIf="!is_editing">
+  <h4 class="card-header">Current visits</h4>
+  <div class="card-body">
+    <table>
+      <thead>
+      <tr>
+        <th>User</th>
+        <th>Location</th>
+        <th>Rating</th>
+        <th>Date</th>
+      </tr>
+      </thead>
+      <tbody *ngIf="visits.length===0">
+      <tr>
+        <td>No visits yet!</td>
+      </tr>
+      </tbody>
+
+      <tbody *ngIf="!is_editing">
+      <tr *ngFor="let visit of visits">
+        <td>{{ visit.user }}</td>
+        <td>{{ visit.location }}</td>
+        <td>{{ visit.ratio }}</td>
+        <td>{{ visit.date }}</td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+
+<div class="card" *ngIf="!is_editing && this.auth.logged_in">
+  <h4 class="card-header">Add new visit</h4>
+  <div class="card-body">
+    <form class="form-inline" [formGroup]="visit_form" (ngSubmit)="add_visit()">
+      <select name="location" class="form-control mr-2" formControlName="location">
+        <option value="" disabled>Location</option>
+        <option *ngFor="let location of locations" value="{{ location.id }}">{{ location.name }}</option>
+      </select>
+      <input name="rating" type="text" class="form-control mr-2" formControlName="rating">
+      <button class="btn btn-primary" type="submit" [disabled]="!visit_form.valid">Add</button>
+    </form>
+  </div>
+</div>

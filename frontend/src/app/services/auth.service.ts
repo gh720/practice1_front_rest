@@ -3,38 +3,64 @@ import {HttpHeaders, HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
+import jwt_decode from 'jwt-decode';
+
 
 @Injectable()
 export class AuthService {
 
+  logged_in = false;
+
   private BASE_URL: string = 'http://localhost:8002';
-  private headers: HttpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
+  private headers: HttpHeaders = new HttpHeaders({
+    'Content-Type': 'application/json'
+    , 'X_NO_JWT_TOKEN': ''
+  });
   private token: string;
 
-
   constructor(private http: HttpClient) {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        let dec = jwt_decode(token);
+        this.logged_in=true;
+      }
+      catch(e){
+      }
+    }
   }
 
   login(user): Observable<any> {
     let url: string = `${this.BASE_URL}/sign_in/`;
     return this.http.post(url, JSON.stringify(user), {headers: this.headers})
-      .map((response) => {
-        return response;
+      .map((response: any) => {
+        // let login_successful = false;
+        if (!response.token) {
+          throw new Error("Invalid username or password");
+        }
+        let dec = jwt_decode(response.token);
+        localStorage.setItem('token', response.token);
+        // login_successful = true;
+        this.logged_in = true;
+        // this.router.navigateByUrl('/status');
+        return this.logged_in;
       });
-    //   let json = response.json();
-    //   if (json && json.token) {
-    //     this.token = json.token;
-    //     localStorage.setItem('currentUser', JSON.stringify({username: username, token: json.token}))
-    //   }
-    // });
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    this.logged_in = false;
   }
 
   register(user): Observable<any> {
     let url: string = `${this.BASE_URL}/register/`;
-    return this.http.post(url, user, {headers: this.headers})
+    return this.http.post(url, JSON.stringify(user), {headers: this.headers})
     // ((response): Response) ??
-      .map((response) => {
-        return response;
+      .map((response: any) => {
+        if (!response.token) {
+          throw new Error("Registration failed");
+        }
+        return this.logged_in;
       })
   }
 
@@ -42,14 +68,16 @@ export class AuthService {
   ensure_authenticated(token): Observable<any> {
     let url: string = `${this.BASE_URL}/status/`;
     let headers: HttpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `JWT ${token}`
-    });
+        'Content-Type': 'application/json'
+        , 'X_NO_JWT_TOKEN': ''
+        , 'Authorization': `JWT ${token}`
+      })
+    ;
     return this.http.get(url, {headers: headers});
   }
 
-  test(): string {
-    return 'working!';
-  }
 
+  get_token():string {
+    return localStorage.getItem('token');
+  }
 }

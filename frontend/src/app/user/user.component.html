@@ -1,0 +1,38 @@
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="card" *ngIf="!is_editing">
+  <h4 class="card-header">Current users</h4>
+  <div class="card-body">
+    <table>
+      <thead>
+      <tr>
+        <th>User name</th>
+        <th>Email</th>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Gender</th>
+        <th>Birth date</th>
+        <th>Country</th>
+      </tr>
+      </thead>
+      <tbody *ngIf="users.length===0">
+      <tr>
+        <td>No users yet!</td>
+      </tr>
+      </tbody>
+
+      <tbody *ngIf="!is_editing">
+      <tr *ngFor="let user of users">
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.first_name }}</td>
+        <td>{{ user.last_name }}</td>
+        <td>{{ user.gender }}</td>
+        <td>{{ user.birth_date }}</td>
+        <td>{{ user.country }}</td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
