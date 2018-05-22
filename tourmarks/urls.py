@@ -11,7 +11,7 @@ router.register('visits', VisitViewSet)
 
 urlpatterns = [
     url('^register/$', UserCreateView.as_view(), name='register')
-    , url(r'^sign_in/', rest_framework_jwt.views.obtain_jwt_token, name='sign_in')
+    , url('^sign_in/$', rest_framework_jwt.views.obtain_jwt_token, name='sign_in')
     , url('^status/$', UserStatusView.as_view(), name='user_status')
     , url('users/$', UserListView.as_view(), name='user_list')
     , url('users/(?P<pk>\d+)/$', UserDetailView.as_view(), name='user_details')

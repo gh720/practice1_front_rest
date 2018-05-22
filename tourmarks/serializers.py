@@ -4,8 +4,7 @@ from rest_framework import serializers
 from tourmarks.models import User, Visit, Location
 
 
-class UserSerializer(serializers.ModelSerializer):
-
+class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name'
@@ -15,6 +14,13 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
         return user
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'first_name', 'last_name'
+            , 'gender', 'birth_date', 'country']
 
     def update(self, instance, validated_data):
         password = validated_data.pop('password', None)
@@ -28,6 +34,18 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class VisitSerializer(serializers.ModelSerializer):
+    date = serializers.DateTimeField(format="%Y-%m-%d")
+
+    class Meta:
+        model = Visit
+        fields = ['id', 'user', 'location', 'date', 'ratio']
+        extra_kwargs = {'user': {'read_only': True}, 'date': {'read_only': True}}
+
+
+class VisitWithNamesSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source="user.username")
+    location = serializers.CharField(source="location.name")
+
     class Meta:
         model = Visit
         fields = ['id', 'user', 'location', 'date', 'ratio']

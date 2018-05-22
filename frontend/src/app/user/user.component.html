@@ -3,7 +3,7 @@
 <div class="card" *ngIf="!is_editing">
   <h4 class="card-header">Current users</h4>
   <div class="card-body">
-    <table>
+    <table class="table table-bordered">
       <thead>
       <tr>
         <th>User name</th>
@@ -30,6 +30,7 @@
         <td>{{ user.gender }}</td>
         <td>{{ user.birth_date }}</td>
         <td>{{ user.country }}</td>
+        <td><a type="button" [routerLink]="['/user_ratio', user.id]">Rating</a></td>
       </tr>
       </tbody>
     </table>

@@ -5,7 +5,7 @@ from django.contrib import auth
 from rest_framework import status
 from rest_framework.reverse import reverse
 
-from tourmarks.serializers import UserSerializer
+from tourmarks.serializers import UserCreateSerializer
 
 from .base_tests import User, create_user, test_wrapper
 
@@ -121,7 +121,7 @@ class test_users_view_authd_c(test_wrapper.base_c):
         self.user3 = create_user(sequence=3, save=False)
         self.user4 = create_user(sequence=4, save=False)
         self.login(username=self.user1.initial.get('username'), password=self.user1.initial.get('password'))
-        self.szr2 = UserSerializer(self.user2)
+        self.szr2 = UserCreateSerializer(self.user2)
 
     def test_users_post(self):
         url = reverse('user_list')

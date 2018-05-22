@@ -18,6 +18,10 @@ export class LocationService {
     return this.http.get<Location[]>(`${this.API_URL}/locations/`);
   }
 
+  get_location(location_id:string): Observable<Location> {
+    return this.http.get<Location>(`${this.API_URL}/locations/${location_id}/`);
+  }
+
   add_location(location: Location): Observable<any> {
     let headers: HttpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -34,7 +38,7 @@ export class LocationService {
 
   }
 
-  get_ratio(id:string) {
+  get_ratio(id: string) {
     return this.http.get<Location[]>(`${this.API_URL}/locations/${id}/ratio/`);
   }
 }

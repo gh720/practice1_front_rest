@@ -1,0 +1,61 @@
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="card" *ngIf="!is_loading">
+  <h4 class="card-header">User profile</h4>
+  <div class="card-body">
+    <form #account_form="ngForm" (ngSubmit)="save(user)">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fa fa-user"></i></span>
+        </div>
+        <input class="form-control" type="text" name="username" [(ngModel)]="user.username" placeholder="Username"
+               required>
+      </div>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+        </div>
+        <input class="form-control" type="email" name="email" [(ngModel)]="user.email" placeholder="Email" >
+      </div>
+
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fa fa-address-card"></i></span>
+        </div>
+        <input class="form-control" type="first_name" name="first_name" [(ngModel)]="user.first_name"
+               placeholder="First name" >
+      </div>
+
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fa fa-address-card"></i></span>
+        </div>
+        <input class="form-control" type="last_name" name="last_name" [(ngModel)]="user.last_name" placeholder="Last name" >
+      </div>
+
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+        </div>
+        <input class="form-control" type="birth_date" name="birth_date" [(ngModel)]="user.birth_date" placeholder="Birth date" >
+      </div>
+
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fa fa-address-card"></i></span>
+        </div>
+        <input class="form-control" type="gender" name="gender" [(ngModel)]="user.gender" placeholder="Gender" >
+      </div>
+
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fa fa-black-tie"></i></span>
+        </div>
+        <input class="form-control" type="country" name="country" [(ngModel)]="user.country" placeholder="Country" >
+      </div>
+      <button class="btn btn-primary" type="submit" [disabled]="!account_form.form.valid">
+        <i class="fa fa-save"></i> Save
+      </button>
+    </form>
+  </div>
+</div>

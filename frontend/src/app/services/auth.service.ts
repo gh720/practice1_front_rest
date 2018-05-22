@@ -10,6 +10,7 @@ import jwt_decode from 'jwt-decode';
 export class AuthService {
 
   logged_in = false;
+  current_user_id: number;
 
   private BASE_URL: string = 'http://localhost:8002';
   private headers: HttpHeaders = new HttpHeaders({
@@ -23,9 +24,12 @@ export class AuthService {
     if (token) {
       try {
         let dec = jwt_decode(token);
-        this.logged_in=true;
+        this.logged_in = true;
+        this.current_user_id = dec.user_id;
+        console.log("decoded user:", dec);
+
       }
-      catch(e){
+      catch (e) {
       }
     }
   }
@@ -40,6 +44,7 @@ export class AuthService {
         }
         let dec = jwt_decode(response.token);
         localStorage.setItem('token', response.token);
+        this.current_user_id = dec.id;
         // login_successful = true;
         this.logged_in = true;
         // this.router.navigateByUrl('/status');
@@ -50,6 +55,7 @@ export class AuthService {
   logout() {
     localStorage.removeItem('token');
     this.logged_in = false;
+    this.current_user_id = null;
   }
 
   register(user): Observable<any> {
@@ -77,7 +83,7 @@ export class AuthService {
   }
 
 
-  get_token():string {
+  get_token(): string {
     return localStorage.getItem('token');
   }
 }

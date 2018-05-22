@@ -13,7 +13,7 @@ export class VisitService {
   }
 
   get_visits(): Observable<Visit[]> {
-    return this.http.get<Visit[]>(`${this.API_URL}/visits/`);
+    return this.http.get<Visit[]>(`${this.API_URL}/visits/with_names/`);
     //   .map(
     //   data=>{
     //     for (var visit of data) {

@@ -1,9 +1,9 @@
 <app-toast [message]="toast.message"></app-toast>
 
-<div class="card" *ngIf="!is_editing">
+<div class="card" *ngIf="!is_loading">
   <h4 class="card-header">Current visits</h4>
   <div class="card-body">
-    <table>
+    <table class="table table-bordered">
       <thead>
       <tr>
         <th>User</th>
@@ -40,7 +40,7 @@
         <option value="" disabled>Location</option>
         <option *ngFor="let location of locations" value="{{ location.id }}">{{ location.name }}</option>
       </select>
-      <input name="rating" type="text" class="form-control mr-2" formControlName="rating">
+      <input name="rating" type="text" class="form-control mr-2" formControlName="rating" placeholder="rating">
       <button class="btn btn-primary" type="submit" [disabled]="!visit_form.valid">Add</button>
     </form>
   </div>

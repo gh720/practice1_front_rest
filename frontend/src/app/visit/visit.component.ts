@@ -7,6 +7,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ToastComponent} from "../common/toast/toast.component";
 import {LocationService} from "../services/location.service";
 import {AuthService} from "../services/auth.service";
+import {DatePipe} from "@angular/common";
 
 
 @Component({
@@ -42,10 +43,10 @@ export class VisitComponent implements OnInit {
   add_visit() {
     console.log("saving visit:", this.visit_form.value);
     let value = this.visit_form.value;
-    let visit=new Visit();
-    visit.location=value.location;
-    visit.ratio=value.rating;
-    console.log({ 'value':  value, 'visit': visit });
+    let visit = new Visit();
+    visit.location = value.location;
+    visit.ratio = value.rating;
+    console.log({'value': value, 'visit': visit});
 
     this.visit_service.add_visit(visit)
       .flatMap(
@@ -56,11 +57,23 @@ export class VisitComponent implements OnInit {
         }
       )
       .subscribe(
-        data => this.visits = data
+        data => this.process_visits(data)
         , err => console.log('add_visit:', err)
       );
   }
 
+  private process_visits(data: Visit[]) {
+    this.visits = data;
+    for (let visit of this.visits) {
+      visit.date = this.convert_date(visit.date)
+    }
+    console.log(this.visits);
+
+  }
+
+  private convert_date(date: string, s: string = '%Y-%m-%d') {
+    return new DatePipe('en-US').transform(date, 'yyyy-dd-MM');
+  }
 
   ngOnInit() {
 
@@ -71,10 +84,11 @@ export class VisitComponent implements OnInit {
     Observable.forkJoin(this.location_service.get_locations()
       , this.visit_service.get_visits()).subscribe(([locations, visits]) => {
         this.locations = locations;
-        this.visits = visits;
+        this.process_visits(visits);
       }
       , error => console.log("failed to initialize visit:", error)
       , () => this.is_loading = false
     );
   }
+
 }

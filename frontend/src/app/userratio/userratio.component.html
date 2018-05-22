@@ -1,3 +1,50 @@
-<p>
-  userratio works!
-</p>
+<app-loading [condition]="is_loading"></app-loading>
+
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="card" *ngIf="!is_loading">
+  <h4 class="card-header">User rating for: {{ user.name }}</h4>
+  <div class="card-body">
+    <table class="table table-bordered">
+      <tbody>
+      <tr>
+        <td>Count:</td>
+        <td>{{ ratio_data.count }}</td>
+      </tr>
+      <tr>
+        <td>Average:</td>
+        <td>{{ ratio_data.avg }}</td>
+      </tr>
+      </tbody>
+    </table>
+    <hr/>
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th>Country</th>
+        <th>City</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody *ngIf="ratio_data.locations.length===0">
+      <tr>
+        <td>This user rated no locations yet!</td>
+      </tr>
+      </tbody>
+
+      <tbody *ngIf="!is_editing">
+      <tr *ngFor="let location of ratio_data.locations">
+        <td>{{ location.country }}</td>
+        <td>{{ location.city }}</td>
+        <td>{{ location.name }}</td>
+        <td>{{ location.description }}</td>
+        <td><a type="button" [routerLink]="['/location_ratio', location.id]">Rating</a></td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+

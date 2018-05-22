@@ -1,5 +1,5 @@
 export class Visit {
-  _id: string;
+  id: string;
   user: string;
   location: string;
   date: string;

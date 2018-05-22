@@ -14,7 +14,6 @@ from rest_framework_jwt.settings import api_settings as jwt_settings
 from rest_framework_jwt.views import verify_jwt_token
 
 from tourmarks.models import User, Location, Visit
-from tourmarks.serializers import UserSerializer
 
 import tourmarks.serializers as srz
 
@@ -56,7 +55,7 @@ class UserListView(generics.ListAPIView):
     List of users ('user_list')
     '''
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = srz.UserSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get(self, request, *args, **kwargs):
@@ -68,7 +67,7 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     User details ('user_details')
     '''
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = srz.UserSerializer
     permission_classes = (IsOwnerOrReadOnly,  )
 
 
@@ -79,8 +78,7 @@ class UserCreateView(generics.CreateAPIView):
     authentication_classes = ()
     permission_classes = ()
     queryset = User.objects.all()
-    serializer_class = UserSerializer
-
+    serializer_class = srz.UserCreateSerializer
 
     def new_token(self, obj):
         jwt_payload_handler = jwt_settings.JWT_PAYLOAD_HANDLER
@@ -120,10 +118,17 @@ class VisitViewSet(viewsets.ModelViewSet):
     '''
     Endpoints for a visit ('visits')
     '''
-    queryset = Visit.objects.all()
+    queryset = Visit.objects.all() # evaluated once
     serializer_class = srz.VisitSerializer
     http_method_names = ['get', 'put', 'patch', 'delete']
     permission_classes = (IsOwnerOrReadOnly,)
+
+    @list_route(methods=['get'])
+    def with_names(self,request, *args, **kwargs):
+        serializer = srz.VisitWithNamesSerializer(self.get_queryset(),many=True)
+        return Response(serializer.data)
+
+
 
 
 class LocationViewSet(viewsets.ModelViewSet):

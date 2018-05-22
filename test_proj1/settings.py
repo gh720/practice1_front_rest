@@ -140,7 +140,7 @@ JWT_AUTH = {
     # 'JWT_VERIFY_EXPIRATION': True,
     # 'JWT_LEEWAY': 0,
     # 'JWT_AUTH_HEADER_PREFIX': 'Bearer',
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300)
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=3000)
 }
 
 USE_JWT_FOR_TESTS = True

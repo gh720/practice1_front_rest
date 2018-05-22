@@ -1,9 +1,10 @@
 import {BrowserModule} from '@angular/platform-browser';
+import {CommonModule} from "@angular/common";
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 
-import {CommonModule} from "./common/common.module";
+import {common_module_c} from "./common/common.module";
 import {AppComponent} from './app.component';
 import {LoginComponent} from './login/login.component';
 import {AuthService} from "./services/auth.service";
@@ -12,7 +13,6 @@ import {RegisterComponent} from './register/register.component';
 import {StatusComponent} from './status/status.component';
 import {LoginRedirectService} from "./services/login-redirect.service";
 import {EnsureAuthService} from "./services/ensure-auth.service";
-import {ToastComponent} from './common/toast/toast.component';
 import {LocationComponent} from './location/location.component';
 import {UserComponent} from './user/user.component';
 import {VisitComponent} from './visit/visit.component';
@@ -21,8 +21,11 @@ import {LocationService} from "./services/location.service";
 import {UserService} from "./services/user.service";
 import {token_interceptor_c} from "./services/token.interceptor";
 import {LogoutComponent} from './logout/logout.component';
-import { LocationRatioComponent } from './locationratio/locationratio.component';
-import { UserRatioComponent } from './userratio/userratio.component';
+import {LocationRatioComponent} from './locationratio/locationratio.component';
+import {UserRatioComponent} from './userratio/userratio.component';
+import {UserEditComponent} from './useredit/useredit.component';
+import {LoadingComponent} from "./common/loading/loading.component";
+import {ToastComponent} from "./common/toast/toast.component";
 
 
 const routes: Routes = [
@@ -37,6 +40,7 @@ const routes: Routes = [
   {path: 'visits', component: VisitComponent},
   {path: 'location_ratio/:id', component: LocationRatioComponent},
   {path: 'user_ratio/:id', component: UserRatioComponent},
+  {path: 'profile', component: UserEditComponent},
 ];
 
 @NgModule({
@@ -45,25 +49,26 @@ const routes: Routes = [
     LoginComponent,
     RegisterComponent,
     StatusComponent,
-    ToastComponent,
     LocationComponent,
     UserComponent,
     VisitComponent,
     LogoutComponent,
     LocationRatioComponent,
-    UserRatioComponent
+    UserRatioComponent,
+    UserEditComponent,
+    LoadingComponent,
+    ToastComponent,
   ],
   imports: [
-    BrowserModule,
-    HttpClientModule,
-    FormsModule,
-    CommonModule,
-    RouterModule.forRoot(routes)
-    ,
-    HttpClientXsrfModule.withOptions({
+    BrowserModule
+    , HttpClientModule
+    , FormsModule
+    , common_module_c
+    , RouterModule.forRoot(routes)
+    , HttpClientXsrfModule.withOptions({
       cookieName: 'csrftoken',
       headerName: 'X-CSRFToken',
-    }),
+    })
   ],
   providers: [
     {
@@ -74,10 +79,10 @@ const routes: Routes = [
     , AuthService
     , LoginRedirectService
     , EnsureAuthService
-    , ToastComponent
     , VisitService
     , LocationService
     , UserService
+    , ToastComponent
   ],
   bootstrap: [AppComponent]
 })

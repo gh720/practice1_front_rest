@@ -1,9 +1,11 @@
+<app-loading [condition]="is_loading"></app-loading>
+
 <app-toast [message]="toast.message"></app-toast>
 
-<div class="card" *ngIf="!is_editing">
-  <h4 class="card-header">Current locations</h4>
+<div class="card" *ngIf="!is_loading">
+  <h4 class="card-header">Location rating for: {{ location.name }}</h4>
   <div class="card-body">
-    <table>
+    <table class="table table-bordered">
       <tbody>
       <tr>
         <td>Count:</td>
@@ -16,14 +18,16 @@
       </tbody>
     </table>
     <hr/>
-    <table>
+    <table class="table table-bordered">
       <thead>
       <tr>
+        <th>User name</th>
+        <th>Email</th>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Gender</th>
+        <th>Birth date</th>
         <th>Country</th>
-        <th>City</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th></th>
       </tr>
       </thead>
       <tbody *ngIf="ratio_data.visitors.length===0">

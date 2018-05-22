@@ -48,27 +48,6 @@ export class LoginComponent implements OnInit {
       username: this.username,
       password: this.password
     });
-    // let sampleUser: any = {
-    //   username: 'u2@test.local' as string,
-    //   password: 'p2' as string
-    // };
-    // this.auth.register({username: sampleUser.username, password: sampleUser.password})
-    //   .subscribe(
-    //     (user) => {
-    //       console.log(user)
-    //     }, (error) => {
-    //       console.log(error);
-    //     }
-    //   );
-    //
-    // this.auth.login({username: sampleUser.username, password: sampleUser.password}).subscribe(
-    //   (user) => {
-    //     console.log(user);
-    //   }, (error) => {
-    //     console.log(error);
-    //   });
-
-    // console.log(this.auth.test());
   }
 
 

@@ -20,6 +20,10 @@ export class UserComponent implements OnInit {
     , public toast: ToastComponent) {
   }
 
+  can_edit(id):boolean {
+    return this.auth.current_user_id===id;
+  }
+
   ngOnInit() {
     this.user_service.get_users().subscribe(
       data => this.users = data
