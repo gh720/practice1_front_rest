@@ -3,7 +3,7 @@
 <app-toast [message]="toast.message"></app-toast>
 
 <div class="card" *ngIf="!is_loading">
-  <h4 class="card-header">User rating for: {{ user.name }}</h4>
+  <h4 id="userrating_header" class="card-header">User rating for: {{ user.name }}</h4>
   <div class="card-body">
     <table class="table table-bordered">
       <tbody>

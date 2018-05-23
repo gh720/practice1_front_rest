@@ -2,7 +2,7 @@
 
 <div class="row">
   <div class="col-md-4">
-    <h1>Login</h1>
+    <h1 id="login_header">Login</h1>
     <hr/>
     <br/>
     <form [formGroup]="login_form" (ngSubmit)="on_login()" novalidate>
@@ -16,7 +16,7 @@
         <input type="password" id="password" formControlName="password" name="password" placeholder="enter password"
                class="form-control" required>
       </div>
-      <button type="submit" class="btn btn-default" [disabled]="!login_form.valid">Login</button>
+      <button id="submit" type="submit" class="btn btn-default" [disabled]="!login_form.valid">Login</button>
     </form>
   </div>
 </div>

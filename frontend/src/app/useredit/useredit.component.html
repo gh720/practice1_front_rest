@@ -1,7 +1,7 @@
 <app-toast [message]="toast.message"></app-toast>
 
 <div class="card" *ngIf="!is_loading">
-  <h4 class="card-header">User profile</h4>
+  <h4 id="useredit_header" class="card-header">User profile</h4>
   <div class="card-body">
     <form #account_form="ngForm" (ngSubmit)="save(user)">
       <div class="input-group">
