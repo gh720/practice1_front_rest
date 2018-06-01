@@ -72,6 +72,7 @@ class test_visits_view_authd_c(visits_test_wrapper.base_c):
     def test_visits_update_put(self):
         url = reverse('visit-detail', kwargs=dict(pk=self.visit1.id))
         new_data = deepcopy(model_to_dict(self.visit1))
+        new_data['date'] = self.visit1.date
         new_data['ratio'] = 11
         response = self.client.put(url, data=new_data)
         self.assertEquals(response.status_code, status.HTTP_400_BAD_REQUEST)

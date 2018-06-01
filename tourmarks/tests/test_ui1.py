@@ -146,7 +146,7 @@ class register_page_c(common_page_c):
         super().__init__(driver, base_url, present_loc)
         self.present_loc = (fixtures_c.common_loc.register_loc)
 
-
+@unittest.skip
 class test_ui1(TestCase):
     def setUp(self):
         self.driver = webdriver.Chrome

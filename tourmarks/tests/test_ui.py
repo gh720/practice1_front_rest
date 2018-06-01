@@ -6,6 +6,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 import time
 
+
+@unittest.skip
 class login_test_case_c(LiveServerTestCase):
     def setUp(self):
         self.selenium = webdriver.WebDriver(r'E:\app\devel\web\selenium\chromedriver.exe')
